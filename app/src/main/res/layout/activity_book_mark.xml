@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView android:id="@+id/tv_bookmark_null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="还未添加书签"
+        android:textSize="30sp"
+        android:textColor="@color/colorblue"
+        android:layout_gravity="center"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_bookmark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+    </android.support.v7.widget.RecyclerView>
+</FrameLayout>

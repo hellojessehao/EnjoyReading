@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">悦读无弹窗</string>
+    <string name="action_settings">设置</string>
+    <string name="button_novel">小说</string>
+    <string name="search_edit_hint">请输入想搜索的小说名或作者</string>
+    <string name="search">搜索</string>
+    <string name="search_cannot_null">搜索条件不能为空</string>
+    <string name="html_parse_err">HTML解析错误</string>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Enjoy Reading</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_novel">novel</string>
+    <string name="search_edit_hint">type novel name or auth name</string>
+    <string name="search">search</string>
+    <string name="search_cannot_null">condition can\'t be null</string>
+    <string name="html_parse_err">HTML parse error</string>
+</resources>
