@@ -53,20 +53,6 @@ public class BaseActivity extends Activity {
     }
     //@}
 
-    public static String getSectionUrl(String sectionUrl,String baseUrl,boolean isPre){
-        int beginIndex = sectionUrl.lastIndexOf("/");
-        int endIndex = sectionUrl.lastIndexOf(".");
-        String urlNum = sectionUrl.substring(beginIndex+1,endIndex);
-        String newUrlNum;
-        if(isPre){
-             newUrlNum = String.valueOf(Integer.parseInt(urlNum) - 1).concat(".html");
-        }else{
-             newUrlNum = String.valueOf(Integer.parseInt(urlNum) + 1).concat(".html");
-        }
-        String newUrl = baseUrl.concat(newUrlNum);
-        return newUrl;
-    }
-
     /**
      * 得到自定义的progressDialog
      * @param context

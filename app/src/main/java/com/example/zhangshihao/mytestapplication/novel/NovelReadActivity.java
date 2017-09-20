@@ -43,6 +43,8 @@ public class NovelReadActivity extends BaseActivity {
     private String baseUrl;
     private String novelName;
     private String sectionBody;
+    private String preSectionUrl;
+    private String nextSectionUrl;
 
     private Dialog loadingDialog;
 
@@ -56,6 +58,7 @@ public class NovelReadActivity extends BaseActivity {
         if (readIntent != null) {
             //novelTitle = readIntent.getStringExtra("novel_title");
             sectionUrl = readIntent.getStringExtra("section_url");
+            logw("sectionUrl = "+sectionUrl);
             baseUrl = sectionUrl.substring(0, sectionUrl.lastIndexOf("/") + 1);
         }
         init();
@@ -83,6 +86,10 @@ public class NovelReadActivity extends BaseActivity {
                         try {
                             String sectionHtml = new String(response.body().bytes(), Charset.forName("GBK"));
                             Document doc = Jsoup.parse(sectionHtml);
+                            Elements preNextSections = doc.select("div.box_con").select("div.bookname").select("div.bottem1").select("a[href]");
+                            preSectionUrl = baseUrl.concat(preNextSections.get(1).attr("href"));
+                            nextSectionUrl = baseUrl.concat(preNextSections.get(3).attr("href"));
+                            logw("preSectionUrl = "+preSectionUrl+"\n nextSectionUrl = "+nextSectionUrl);
                             novelName = doc.select("div.con_top").select("a[href]").get(1).text();
                             logw("novelName = "+novelName);
                             novelTitle = doc.select("div.bookname").select("h1").first().text();
@@ -142,20 +149,32 @@ public class NovelReadActivity extends BaseActivity {
     }
 
     public void gotoPreSection(View view) {
-        Intent newSection = new Intent(this, NovelReadActivity.class);
-        String preUrl = getSectionUrl(sectionUrl, baseUrl, true);
-        logd("preUrl = " + preUrl);
-        newSection.putExtra("section_url", preUrl);
-        startActivity(newSection);
+        //处于第一章，点击上一章，跳转至目录界面
+        if(preSectionUrl.contains("..")){
+            Intent toCatalog = new Intent(this,NovelSectionChooseActivity.class);
+            preSectionUrl = preSectionUrl.substring(0,preSectionUrl.lastIndexOf(".")-1);
+            toCatalog.putExtra("sections_url",preSectionUrl);
+            startActivity(toCatalog);
+        }else {
+            Intent newSection = new Intent(this, NovelReadActivity.class);
+            newSection.putExtra("section_url", preSectionUrl);
+            startActivity(newSection);
+        }
         finish();
     }
 
     public void gotoNextSection(View view) {
-        Intent newSection = new Intent(this, NovelReadActivity.class);
-        String nextUrl = getSectionUrl(sectionUrl, baseUrl, false);
-        logd("nextUrl = " + nextUrl);
-        newSection.putExtra("section_url", nextUrl);
-        startActivity(newSection);
+        //处于最后一章，点击下一章，跳转至目录界面
+        if(nextSectionUrl.contains("..")){
+            Intent toCatalog = new Intent(this,NovelSectionChooseActivity.class);
+            nextSectionUrl = nextSectionUrl.substring(0,nextSectionUrl.lastIndexOf(".")-1);
+            toCatalog.putExtra("sections_url",nextSectionUrl);
+            startActivity(toCatalog);
+        }else{
+            Intent newSection = new Intent(this, NovelReadActivity.class);
+            newSection.putExtra("section_url", nextSectionUrl);
+            startActivity(newSection);
+        }
         finish();
     }
     //@}
