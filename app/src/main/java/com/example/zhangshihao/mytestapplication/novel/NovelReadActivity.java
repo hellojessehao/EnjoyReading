@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,6 +39,7 @@ public class NovelReadActivity extends BaseActivity {
 
     private TextView tvSectionTitle;
     private TextView tvNovelBody;
+    private LinearLayout layoutReading;
 
     private String novelTitle;
     private String sectionUrl;
@@ -47,6 +50,13 @@ public class NovelReadActivity extends BaseActivity {
     private String nextSectionUrl;
 
     private Dialog loadingDialog;
+
+    private static final int MODE_NORMAL = 1;
+    private static final int MODE_PROEYES = 2;
+    private static final int MODE_NIGHT = 3;
+    private int mReadModeNow ;
+    private SharedPreferences novelSp;
+    private static final String MODE_READ = "mode_read";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +72,30 @@ public class NovelReadActivity extends BaseActivity {
             baseUrl = sectionUrl.substring(0, sectionUrl.lastIndexOf("/") + 1);
         }
         init();
+        setReadMode();
         showSectionContent();
+    }
+
+    private void setReadMode(){
+        novelSp = getSharedPreferences(SP_NAME,Context.MODE_PRIVATE);
+        mReadModeNow = novelSp.getInt(MODE_READ,MODE_NORMAL);
+        switch (mReadModeNow){
+            case MODE_NORMAL:
+                layoutReading.setBackgroundColor(Color.WHITE);
+                tvSectionTitle.setTextColor(Color.GRAY);
+                tvNovelBody.setTextColor(Color.GRAY);
+                break;
+            case MODE_PROEYES:
+                layoutReading.setBackgroundColor(Color.parseColor("#C7EDCC"));
+                tvSectionTitle.setTextColor(Color.GRAY);
+                tvNovelBody.setTextColor(Color.GRAY);
+                break;
+            case MODE_NIGHT:
+                layoutReading.setBackgroundColor(Color.parseColor("#001F2D"));
+                tvSectionTitle.setTextColor(Color.parseColor("#3E5563"));
+                tvNovelBody.setTextColor(Color.parseColor("#3E5563"));
+                break;
+        }
     }
 
     private void showSectionContent() {
@@ -123,11 +156,39 @@ public class NovelReadActivity extends BaseActivity {
     private void init() {
         tvSectionTitle = (TextView) findViewById(R.id.tv_section_title);
         tvNovelBody = (TextView) findViewById(R.id.tv_novel_body);
+        layoutReading = (LinearLayout) findViewById(R.id.layout_reading);
 
         tvNovelBody.setMovementMethod(ScrollingMovementMethod.getInstance());//implement scroll effect
     }
 
     //handle buttons click events @{
+
+    public void switchReadMode(View view){
+        switch (mReadModeNow){
+            case MODE_NORMAL://当前状态为NORMAL点击改为护眼色
+                layoutReading.setBackgroundColor(Color.parseColor("#C7EDCC"));
+                tvSectionTitle.setTextColor(Color.GRAY);
+                tvNovelBody.setTextColor(Color.GRAY);
+                mReadModeNow = MODE_PROEYES;
+                novelSp.edit().putInt(MODE_READ,mReadModeNow).commit();
+                break;
+            case MODE_PROEYES://当前状态为PROEYES点击改为夜间模式
+                layoutReading.setBackgroundColor(Color.parseColor("#001F2D"));
+                tvSectionTitle.setTextColor(Color.parseColor("#3E5563"));
+                tvNovelBody.setTextColor(Color.parseColor("#3E5563"));
+                mReadModeNow = MODE_NIGHT;
+                novelSp.edit().putInt(MODE_READ,mReadModeNow).commit();
+                break;
+            case MODE_NIGHT://当前状态为NIGHT点击改为正常模式
+                layoutReading.setBackgroundColor(Color.WHITE);
+                tvSectionTitle.setTextColor(Color.GRAY);
+                tvNovelBody.setTextColor(Color.GRAY);
+                mReadModeNow = MODE_NORMAL;
+                novelSp.edit().putInt(MODE_READ,mReadModeNow).commit();
+                break;
+        }
+    }
+
     public void gotoCatalog(View view) {
         Intent sectionChooseIntent = new Intent(this,NovelSectionChooseActivity.class);
         sectionChooseIntent.putExtra("sections_url",baseUrl);
