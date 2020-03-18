@@ -157,8 +157,6 @@ public class NovelReadActivity extends BaseActivity {
         tvSectionTitle = (TextView) findViewById(R.id.tv_section_title);
         tvNovelBody = (TextView) findViewById(R.id.tv_novel_body);
         layoutReading = (LinearLayout) findViewById(R.id.layout_reading);
-
-        tvNovelBody.setMovementMethod(ScrollingMovementMethod.getInstance());//implement scroll effect
     }
 
     //handle buttons click events @{

@@ -8,13 +8,12 @@
     android:minWidth="180dp"
     android:gravity="center"
     android:padding="10dp"
-    android:background="@color/colorwhite"
-    >
+    android:background="@color/colorwhite">
     <ImageView
         android:id="@+id/img"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/ic_loading"
+        android:src="@drawable/dialog_loading"
         />
 
 </LinearLayout>

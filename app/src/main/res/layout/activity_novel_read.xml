@@ -25,14 +25,20 @@
         android:orientation="horizontal"
         android:paddingLeft="16dp">
 
-        <TextView
-            android:id="@+id/tv_novel_body"
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:fadeScrollbars="false"
             android:scrollbars="vertical"
-            android:textSize="20sp" />
+            >
+            <TextView
+                android:id="@+id/tv_novel_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadeScrollbars="false"
+                android:scrollbars="vertical"
+                android:textSize="20sp" />
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="0dp"

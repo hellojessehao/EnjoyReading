@@ -21,7 +21,7 @@ import android.widget.Toast;
  */
 
 public class BaseActivity extends Activity {
-    public static final String TAG = "zhangshihao";
+    public static final String TAG = "zsh";
     public static final boolean DEBUG = false;
     public static final String SP_NAME = "novel_sp";
 
@@ -48,8 +48,16 @@ public class BaseActivity extends Activity {
         if(DEBUG) Log.d(TAG,msg);
     }
 
+    public static void loge(String msg){
+        Log.e(TAG,msg);
+    }
+
     public static void logw(String msg){
          Log.w(TAG,msg);
+    }
+
+    public static void logi(String msg){
+         Log.i(TAG,msg);
     }
     //@}
 

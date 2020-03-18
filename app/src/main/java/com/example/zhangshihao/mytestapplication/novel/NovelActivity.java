@@ -17,6 +17,7 @@ import com.example.zhangshihao.mytestapplication.BaseActivity;
 import com.example.zhangshihao.mytestapplication.R;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -63,11 +64,10 @@ public class NovelActivity extends BaseActivity {
         startActivity(new Intent(this,BookMarkActivity.class));
     }
 
-    //url = "http://zhannei.baidu.com/cse/search?s=2041213923836881982&q=$key&p=$index&isNeedCheckDomain=1&jump=1"
+    //url = "https://www.37zw.net/s/so.php?type=articlename&s=大主宰"
     private void doSearch(String key){
-        String url = "http://zhannei.baidu.com/cse/search?s=2041213923836881982"
-                .concat("&q="+key)
-                .concat("&p=0&isNeedCheckDomain=1&jump=1");
+        String url = "https://www.37zw.net/s/so.php?type=articlename&s="
+                .concat(key);
         logw(url);
         OkHttpClient client = new OkHttpClient();
         Request.Builder builder = new Request.Builder()
@@ -86,7 +86,8 @@ public class NovelActivity extends BaseActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String body = response.body().string();
+                String body = new String(response.body().bytes(), Charset.forName("GBK"));
+                logd("onResponse : body-ori = \n"+body);
                 Intent intentToReading = new Intent(NovelActivity.this,NovelResultActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("novelBody",body);

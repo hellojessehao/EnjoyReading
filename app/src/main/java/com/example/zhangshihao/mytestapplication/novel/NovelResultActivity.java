@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.zhangshihao.mytestapplication.BaseActivity;
+import com.example.zhangshihao.mytestapplication.Constant;
 import com.example.zhangshihao.mytestapplication.R;
 import com.example.zhangshihao.mytestapplication.novel.model.NovelInfo;
 
@@ -141,7 +143,9 @@ public class NovelResultActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            setImageByNetAddress(holder.img,infos.get(position).getImg());
+            if(!TextUtils.isEmpty(infos.get(position).getImg())){
+                setImageByNetAddress(holder.img,infos.get(position).getImg());
+            }
             holder.title.setText(infos.get(position).getTitle());
             holder.intro.setText(infos.get(position).getIntro());
             holder.author.setText(infos.get(position).getAuthor());
@@ -198,18 +202,14 @@ public class NovelResultActivity extends BaseActivity {
         try {
             infos = new ArrayList<NovelInfo>();
             Document js = Jsoup.parse(htmlStr);
-            Elements novelHtmls = js.select("div.result-item");
+            Elements novelHtmls = js.select("div.novellist").select("li");
+            logd(" list size = "+novelHtmls.size());
             for (Element e : novelHtmls) {
                 NovelInfo novel = new NovelInfo();
-                novel.img = e.select("img.result-game-item-pic-link-img").first().attr("src");
-                novel.url = e.select("a.result-game-item-title-link").first().attr("href");
+                novel.url = Constant.BASE_URL.concat(e.select("a[href]").attr("href"));
                 novel.novelId = Math.abs(novel.url.hashCode());
-                novel.title = e.select("a.result-game-item-title-link").first().text();
-                novel.intro = e.select("p.result-game-item-desc").first().text();
-                Elements info = e.select("p.result-game-item-info-tag");
-                novel.author = info.get(0).child(1).text();
-                novel.category = info.get(1).child(1).text();
-                novel.updateTime = info.get(2).child(1).text();
+                novel.title = e.select("a[href]").text();
+                novel.author = e.text();
                 infos.add(novel);
                 logd(novel.toString());
             }
