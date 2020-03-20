@@ -10,3 +10,5 @@
 ![image](https://github.com/hellojessehao/EnjoyReading/blob/master/app/src/main/res/mipmap-hdpi/md_show_4.png)
 书签界面：
 ![image](https://github.com/hellojessehao/EnjoyReading/blob/master/app/src/main/res/mipmap-hdpi/md_show_5.png)
+
+apk下载地址：https://download.csdn.net/download/yonghuming_jesse/12254688
